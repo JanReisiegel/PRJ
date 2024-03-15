@@ -27,7 +27,17 @@ namespace OAuthSerever.Data
                 Surname = "admin",
                 Email = "admin",
                 BirthDate = DateOnly.FromDateTime(DateTime.Now),
-
+                PersonIdentityNumber = "",
+            });
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = "ADMIN",
+                Name = "Admin"
+            });
+            modelBuilder.Entity<UserRole>().HasData(new UserRole
+            {
+                UserId = "ADMIN",
+                RoleId = "ADMIN",
             });
         }
     }

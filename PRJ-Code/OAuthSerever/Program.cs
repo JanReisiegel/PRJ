@@ -1,14 +1,34 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using OAuthSerever.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+var connectionString = builder.Configuration.GetConnectionString("defaultConnection");
 
-//Pøipojení databáze
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    //Napojení Entity Framework Core pro použití SQL Serveru
+    options.UseSqlServer(connectionString);
 
-//Pøipojení identity
+    //Registrace entity pro OpenIddict
+    options.UseOpenIddict();
+});
+
+builder.Services.AddOpenIddict()
+    .AddCore(options =>
+    {
+        options.UseEntityFrameworkCore().UseDbContext<AppDbContext>();
+    })
+    .AddServer(options =>
+    {
+        options.SetTokenEndpointUris("connect/token");
+        options.AllowClientCredentialsFlow();
+        options.AddDevelopmentEncryptionCertificate().AddDevelopmentSigningCertificate();
+        options.UseAspNetCore().EnableTokenEndpointPassthrough();
+    });
 
 var app = builder.Build();
 
@@ -29,6 +49,11 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseEndpoints(options =>
+{
+    options.MapControllers();
+    options.MapDefaultControllerRoute();
+});
 
 app.MapRazorPages();
 
