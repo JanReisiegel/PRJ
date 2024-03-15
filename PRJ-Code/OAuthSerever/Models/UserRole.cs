@@ -10,8 +10,8 @@ namespace OAuthSerever.Models
         [Key]
         public string RoleId { get; set; } = "";
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public User? User { get; set; }
         [ForeignKey(nameof(RoleId))]
-        public Role Role { get; set; }
+        public Role? Role { get; set; }
     }
 }

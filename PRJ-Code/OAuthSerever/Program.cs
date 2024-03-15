@@ -7,22 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 //Pøipojení databáze
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseSqlite($"Filename={Path.Combine(Path.GetTempPath(), "openid-server.sqlite3")}");
-    options.UseOpenIddict();
-});
-
-builder.Services.AddOpenIddict().AddCore(options =>
-{
-    options.UseEntityFrameworkCore().UseDbContext<AppDbContext>();
-}).AddServer(options =>
-{
-    options.SetTokenEndpointUris("connect/token");
-    options.AllowClientCredentialsFlow();
-    options.AddDevelopmentEncryptionCertificate().AddDevelopmentSigningCertificate();
-    options.UseAspNetCore().EnableTokenEndpointPassthrough();
-});
 
 //Pøipojení identity
 
@@ -45,11 +29,6 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapDefaultControllerRoute();
-});
 
 app.MapRazorPages();
 

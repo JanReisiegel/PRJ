@@ -12,6 +12,6 @@ namespace OAuthSerever.Models
         [Required]
         public string Token { get; set; } = "";
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

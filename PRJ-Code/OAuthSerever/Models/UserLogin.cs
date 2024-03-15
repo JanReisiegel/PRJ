@@ -11,6 +11,6 @@ namespace OAuthSerever.Models
         public string ProviderKey { get; set; } = "";
         public string UserId { get; set; } = "";
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }
