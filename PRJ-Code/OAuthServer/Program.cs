@@ -1,60 +1,51 @@
-using IdentityServer4.Configuration;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Internal;
+using Microsoft.IdentityModel.Tokens;
 using OAuthServer.Data;
-using OAuthServer.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("Users")));
-
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
-
-var configurationString = builder.Configuration.GetConnectionString("Configuration");
-
-builder.Services.AddIdentityServer(options =>
+builder.Services.AddAuthentication()
+    .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
     {
-        options.Events.RaiseErrorEvents = true;
-        options.Events.RaiseInformationEvents = true;
-        options.Events.RaiseFailureEvents = true;
-        options.Events.RaiseSuccessEvents = true;
-
-        options.UserInteraction = new UserInteractionOptions
+        options.Authority = "https://demo.duendesoftware.com";
+        options.ClientId = "MyOAuth";
+        options.ClientSecret = "secret";
+        options.ResponseType = "code";
+        options.CallbackPath = "/signin-oidc";
+        options.SaveTokens = true;
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            LoginUrl = "/Account/Login",
-            LogoutUrl = "/Account/Logout",
-            ConsentUrl = "/Consent/Index",
-            ErrorUrl = "/Home/Error",
+            ValidateIssuerSigningKey = false,
+            SignatureValidator = delegate (string token, TokenValidationParameters parameters)
+            {
+                var jwt = new JwtSecurityToken(token);
+                return jwt;
+            }
         };
-    })
-    .AddAspNetIdentity<ApplicationUser>()
-    .AddConfigurationStore(options =>
-    {
-        options.ConfigureDbContext = db => db.UseSqlite(configurationString);
-    })
-    .AddOperationalStore(options =>
-    {
-        options.ConfigureDbContext = db =>
-        db.UseSqlite(configurationString);
+    });
 
-        // this enables automatic token cleanup. this is optional.
-        //options.EnableTokenCleanup = true;
-        // options.TokenCleanupInterval = 15; // interval in seconds. 15 seconds useful for debugging
-    }); ;
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseMigrationsEndPoint();
+}
+else
 {
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
