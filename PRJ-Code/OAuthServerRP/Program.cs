@@ -1,7 +1,9 @@
 using IdentityServer4.Models;
+using IdentityServer4.Test;
 using Microsoft.IdentityModel.Tokens;
 using OAuthServerRP.Models;
 using OAuthServerRP.Services;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +17,7 @@ builder.Services.AddIdentityServer()
     .AddInMemoryApiScopes(Config.ApiScopes)
     .AddInMemoryClients(Config.Clients);
 
-builder.Services.AddAuthentication("Bearer")
+/*builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
         options.Authority = "https://localhost:7210/";
@@ -23,7 +25,7 @@ builder.Services.AddAuthentication("Bearer")
         {
             ValidateAudience = false
         };
-    });
+    });*/
 
 builder.Services.AddAuthorization(options =>
 {
@@ -33,6 +35,33 @@ builder.Services.AddAuthorization(options =>
         policy.RequireClaim("scope", AuthorizationConstants.ADMINISTRATOR_ROLE);
     });
 });
+
+JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = "oidc";
+})
+    .AddCookie("Cookies")
+    .AddOpenIdConnect("oidc", options =>
+    {
+        options.Authority = "https://localhost:7210/";
+        options.RequireHttpsMetadata = false;
+
+        options.ClientId = "RazorPages";
+        options.ClientSecret = "secret";
+        options.ResponseType = "code";
+
+        options.SaveTokens = true;
+    });
+
+builder.Services.AddIdentityServer()
+    .AddInMemoryIdentityResources(Config.IdentityResources)
+    .AddInMemoryApiScopes(Config.ApiScopes)
+    .AddInMemoryClients(Config.Clients)
+    .AddTestUsers(TestUsers.Users);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,6 +83,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
-app.MapControllers().RequireAuthorization("ApiScope");
+app.MapControllers().RequireAuthorization();
 
 app.Run();
