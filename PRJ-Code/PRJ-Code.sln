@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthServerRP", "OAuthServerRP\OAuthServerRP.csproj", "{62157DE9-AD94-4CAF-B41A-7EFD9366FBA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAuthServerRP", "OAuthServerRP\OAuthServerRP.csproj", "{62157DE9-AD94-4CAF-B41A-7EFD9366FBA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestIdentity", "TestIdentity\TestIdentity.csproj", "{A8C3E74A-DC1E-4214-85F6-5D607D30CE74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestIdentity", "TestIdentity\TestIdentity.csproj", "{A8C3E74A-DC1E-4214-85F6-5D607D30CE74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,5 +12,6 @@ namespace OAuthServerRP.Controllers
         {
             return Ok(new JsonResult(from c in User.Claims select new { c.Type, c.Value }));
         }
+
     }
 }

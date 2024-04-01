@@ -12,12 +12,12 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddControllers();
 
-builder.Services.AddIdentityServer()
+/*builder.Services.AddIdentityServer()
     .AddDeveloperSigningCredential()
     .AddInMemoryApiScopes(Config.ApiScopes)
     .AddInMemoryClients(Config.Clients);
 
-/*builder.Services.AddAuthentication("Bearer")
+builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
         options.Authority = "https://localhost:7210/";
@@ -39,21 +39,24 @@ builder.Services.AddAuthorization(options =>
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = "Cookies";
-    options.DefaultChallengeScheme = "oidc";
-})
+    {
+        options.DefaultScheme = "Cookies";
+        options.DefaultChallengeScheme = "oidc";
+    })
     .AddCookie("Cookies")
     .AddOpenIdConnect("oidc", options =>
     {
-        options.Authority = "https://localhost:7210/";
-        options.RequireHttpsMetadata = false;
+        options.Authority = "https://localhost:7210";
+        //options.RequireHttpsMetadata = false;
 
         options.ClientId = "RazorPages";
         options.ClientSecret = "secret";
         options.ResponseType = "code";
 
         options.SaveTokens = true;
+
+        options.Scope.Add("profile");
+        options.GetClaimsFromUserInfoEndpoint = true;
     });
 
 builder.Services.AddIdentityServer()

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace OAuthServerRP.Areas.Account
+namespace OAuthServerRP.Areas.Identity.Pages
 {
-    public class IndexModel : PageModel
+    public class LoggedOutModel : PageModel
     {
         public void OnGet()
         {

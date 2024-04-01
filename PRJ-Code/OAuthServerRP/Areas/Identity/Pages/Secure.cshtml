@@ -1,0 +1,17 @@
+﻿@page
+@model OAuthServerRP.Areas.Identity.Pages.SecureModel
+@{
+    ViewData["Title"] = "Secure";
+}
+@using Microsoft.AspNetCore.Authentication
+
+
+<h2>Claims</h2>
+<dl>
+    @foreach (var claim in User.Claims)
+    {
+        <dt>@claim.Type</dt>
+        <dd>@claim.Value</dd>
+    }
+</dl>
+
