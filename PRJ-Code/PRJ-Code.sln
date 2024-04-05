@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAuthServerRP", "OAuthServe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestIdentity", "TestIdentity\TestIdentity.csproj", "{A8C3E74A-DC1E-4214-85F6-5D607D30CE74}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestIdentityASP", "TestIdentityASP\TestIdentityASP.csproj", "{A777A17A-F77C-4C56-8299-7FFE9F21E02A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A8C3E74A-DC1E-4214-85F6-5D607D30CE74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8C3E74A-DC1E-4214-85F6-5D607D30CE74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8C3E74A-DC1E-4214-85F6-5D607D30CE74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A777A17A-F77C-4C56-8299-7FFE9F21E02A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A777A17A-F77C-4C56-8299-7FFE9F21E02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A777A17A-F77C-4C56-8299-7FFE9F21E02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A777A17A-F77C-4C56-8299-7FFE9F21E02A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

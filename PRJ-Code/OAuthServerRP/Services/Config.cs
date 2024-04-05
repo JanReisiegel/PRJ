@@ -1,6 +1,7 @@
 ﻿using IdentityServer4;
 using IdentityServer4.Models;
 using OAuthServerRP.Models;
+using static System.Net.WebRequestMethods;
 
 namespace OAuthServerRP.Services
 {
@@ -9,7 +10,7 @@ namespace OAuthServerRP.Services
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-                new ApiScope(AuthorizationConstants.ADMINISTRATOR_ROLE, "My API")
+                new ApiScope("api1", "My API")
             };
 
         public static IEnumerable<IdentityResource> IdentityResources =>
@@ -32,24 +33,28 @@ namespace OAuthServerRP.Services
                         new Secret("secret".Sha256())
                     },
                     // scopes that client has access to
-                    AllowedScopes = { AuthorizationConstants.ADMINISTRATOR_ROLE }
+                    AllowedScopes = { "api1" }
                 },
 
                 new Client
                 {
-                    ClientId = "RazorPages",
+                    ClientId = "mvc",
                     ClientSecrets = { new Secret("secret".Sha256()) },
+
                     AllowedGrantTypes = GrantTypes.Code,
 
-                    RedirectUris = { "https://localhost:7210/signin-oidc" },
+                    // where to redirect to after login
+                    RedirectUris = { "https://localhost:7005/signin-oidc","http://localhost:5131/signin-oidc" },
 
-                    PostLogoutRedirectUris = { "https://localhost:7210/signout-callback-oidc" },
+                    // where to redirect to after logout
+                    PostLogoutRedirectUris = { "https://localhost:7005/signout-callback-oidc","http://localhost:5131/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
-                    } }
+                    }
+                }
             };
     }
 }

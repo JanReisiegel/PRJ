@@ -1,3 +1,4 @@
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using Microsoft.IdentityModel.Tokens;
@@ -12,11 +13,6 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddControllers();
 
-/*builder.Services.AddIdentityServer()
-    .AddDeveloperSigningCredential()
-    .AddInMemoryApiScopes(Config.ApiScopes)
-    .AddInMemoryClients(Config.Clients);
-
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
@@ -25,18 +21,18 @@ builder.Services.AddAuthentication("Bearer")
         {
             ValidateAudience = false
         };
-    });*/
+    });
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ApiScope", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", AuthorizationConstants.ADMINISTRATOR_ROLE);
+        policy.RequireClaim("scope", "api1");
     });
 });
 
-JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+/*JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 builder.Services.AddAuthentication(options =>
     {
@@ -46,6 +42,9 @@ builder.Services.AddAuthentication(options =>
     .AddCookie("Cookies")
     .AddOpenIdConnect("oidc", options =>
     {
+        //options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+        //options.SignOutScheme = IdentityServerConstants.SignoutScheme;
+
         options.Authority = "https://localhost:7210";
         //options.RequireHttpsMetadata = false;
 
@@ -55,9 +54,15 @@ builder.Services.AddAuthentication(options =>
 
         options.SaveTokens = true;
 
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            NameClaimType = "name",
+            RoleClaimType = "role"
+        };
+
         options.Scope.Add("profile");
         options.GetClaimsFromUserInfoEndpoint = true;
-    });
+    });*/
 
 builder.Services.AddIdentityServer()
     .AddInMemoryIdentityResources(Config.IdentityResources)

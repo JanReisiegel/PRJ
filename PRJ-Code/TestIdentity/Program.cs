@@ -18,7 +18,7 @@ var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCr
     Address = disco.TokenEndpoint,
     ClientId = "client",
     ClientSecret = "secret",
-    Scope = "admin"
+    Scope = "api1"
 });
 if(tokenResponse.IsError)
 {
