@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAuthServerMVC", "OAuthServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiMVCTut", "ApiMVCTut\ApiMVCTut.csproj", "{E819425B-F2B7-47F5-A8A7-D8F3F2E74447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthSereverRP", "OAuthSereverRP\OAuthSereverRP.csproj", "{3EBE1388-32C6-4763-90A7-AB834DA169DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAuthSereverRP", "OAuthSereverRP\OAuthSereverRP.csproj", "{3EBE1388-32C6-4763-90A7-AB834DA169DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAuthMVC", "TestAuthMVC\TestAuthMVC.csproj", "{552FB06F-B648-4BB3-8DFC-BFEBCEF4A08A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestAuthMVC", "TestAuthMVC\TestAuthMVC.csproj", "{552FB06F-B648-4BB3-8DFC-BFEBCEF4A08A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

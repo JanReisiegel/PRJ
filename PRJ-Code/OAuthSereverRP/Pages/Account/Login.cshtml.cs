@@ -27,6 +27,11 @@ namespace OAuthSereverRP.Pages
         public LoginIM Login { get; set; } = new LoginIM();
         public async void OnGet(string redirectUrl)
         {
+            Login.ReturnUrl = redirectUrl;
+            if (string.IsNullOrEmpty(Login.ReturnUrl))
+            {
+                Login.ReturnUrl = Url.Content("~/");
+            }
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl)
