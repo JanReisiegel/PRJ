@@ -38,7 +38,11 @@ builder.Services.AddAuthentication(options =>
         options.ClientSecret = builder.Configuration["Authentication:MyAuth:ClientSecret"];
         options.ResponseType = "code";
         options.SaveTokens = true;
-        //options.GetClaimsFromUserInfoEndpoint = true;
+        options.Scope.Add("profile");
+        options.Scope.Add("openid");
+        options.Scope.Add("api1");
+
+        options.GetClaimsFromUserInfoEndpoint = true;
     });
 
 var app = builder.Build();
