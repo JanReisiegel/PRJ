@@ -16,22 +16,22 @@ namespace OAuthSereverRP.Pages
         private readonly TestUserStore _users;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IEventService _events;
+        private readonly IAuthenticationSchemeProvider _schemeProvider;
 
-        public LoginModel(TestUserStore users, IIdentityServerInteractionService interaction, IEventService events)
+        public LoginModel(TestUserStore users, IIdentityServerInteractionService interaction, IEventService events, IAuthenticationSchemeProvider schemeProvider)
         {
             _users = users;
             _interaction = interaction;
             _events = events;
+            _schemeProvider = schemeProvider;
         }
         [BindProperty]
         public LoginIM Login { get; set; } = new LoginIM();
-        public async void OnGet(string redirectUrl)
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        public async void OnGet()
         {
-            Login.ReturnUrl = redirectUrl;
-            if (string.IsNullOrEmpty(Login.ReturnUrl))
-            {
-                Login.ReturnUrl = Url.Content("~/");
-            }
+            var url = HttpContext.Request.Query["ReturnUrl"];
+            Login.ReturnUrl = $"{Config.Clients.First(x => x.ClientId == GetClientId(url)).RedirectUris.FirstOrDefault()}?{GetParemetres(url)}";
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl)
@@ -68,7 +68,7 @@ namespace OAuthSereverRP.Pages
                     }
 
                     //request for a local page
-                    if (Url.IsLocalUrl(Login.ReturnUrl))
+                    if (Login.ReturnUrl != null)
                     {
                         return Redirect(Login.ReturnUrl);
                     }
@@ -87,6 +87,17 @@ namespace OAuthSereverRP.Pages
             }
             return Page();
         }
-        
+
+        private string GetParemetres(string url)
+        {
+            string parametres = url.Split("?")[1];
+            return parametres;
+        }
+        private string GetClientId(string url)
+        {
+            string[] parametres = url.Split("?")[1].Split("&");
+            string clientId = parametres.FirstOrDefault(x=>x.Contains("client_id")).Split("=")[1];
+            return clientId;
+        }
     }
 }

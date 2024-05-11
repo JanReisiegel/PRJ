@@ -1,3 +1,4 @@
+using IdentityServer4;
 using OAuthSereverRP;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,8 @@ builder.Services.AddIdentityServer()
     .AddInMemoryIdentityResources(Config.IdentityResources)
     .AddInMemoryApiScopes(Config.ApiScopes)
     .AddInMemoryClients(Config.Clients)
-    .AddTestUsers(TestUsers.Users);
+    .AddTestUsers(TestUsers.Users)
+    .AddDeveloperSigningCredential();
 
 var app = builder.Build();
 
