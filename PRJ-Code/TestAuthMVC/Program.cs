@@ -8,21 +8,25 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    options.DefaultScheme = 
+        CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = 
+        OpenIdConnectDefaults.AuthenticationScheme;
 })
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-    {
-        //options.Authority = "https://localhost:5001"; //OAuthServerMVC
-        options.Authority = "https://localhost:7044"; //OAuthServerRP
-        options.ClientId = "mvc";
-        options.ClientSecret = "secret";
-        options.ResponseType = "code";
-        options.SaveTokens = true;
-        options.Scope.Add("profile");
-        options.GetClaimsFromUserInfoEndpoint = true;
-    });
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+{
+    //options.Authority = "https://localhost:5001"; //OAuthServerMVC
+    options.Authority = "https://localhost:7044"; //OAuthServerRP
+    options.ClientId = "mvc";
+    options.ClientSecret = "secret";
+    options.ResponseType = "code";
+    options.SaveTokens = true;
+    options.Scope.Add("profile");
+    options.Scope.Add("api1");
+    options.Scope.Add("offline_access");
+    options.GetClaimsFromUserInfoEndpoint = true;
+});
 
 var app = builder.Build();
 

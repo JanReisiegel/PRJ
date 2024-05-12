@@ -34,10 +34,12 @@ namespace OAuthSereverRP
                     AllowedGrantTypes = GrantTypes.Code,
                     RedirectUris = { "https://localhost:7151/signin-oidc" },
                     PostLogoutRedirectUris = { "https://localhost:7151/signout-callback-oidc" },
+                    AllowOfflineAccess = true,
                     AllowedScopes = new List<string>
                     {
                         IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
+                        "api1"
                     }
                 }
             };

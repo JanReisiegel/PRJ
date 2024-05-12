@@ -1,7 +1,10 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using TestAuthMVC.Models;
 
 namespace TestAuthMVC.Controllers;
@@ -18,6 +21,17 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         return View();
+    }
+    public async Task<IActionResult> CallApi()
+    {
+        var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+        var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        var content = await client.GetStringAsync("https://localhost:6001/identity");
+
+        ViewBag.Json = JArray.Parse(content).ToString();
+        return View("json");
     }
 
     public IActionResult Logout()

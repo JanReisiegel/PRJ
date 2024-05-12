@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using OAuthSereverRP.Models;
 using OAuthSereverRP.Models.InputModels;
 
 namespace OAuthSereverRP.Pages
@@ -28,10 +29,14 @@ namespace OAuthSereverRP.Pages
         [BindProperty]
         public LoginIM Login { get; set; } = new LoginIM();
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        [BindProperty]
+        public string ReturnUrl { get; set; }
         public async void OnGet()
         {
             var url = HttpContext.Request.Query["ReturnUrl"];
             Login.ReturnUrl = $"{Config.Clients.First(x => x.ClientId == GetClientId(url)).RedirectUris.FirstOrDefault()}?{GetParemetres(url)}";
+            ExternalLogins = (await _schemeProvider.GetRequestHandlerSchemesAsync()).ToList();
+            ReturnUrl = Login.ReturnUrl;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl)
@@ -64,7 +69,7 @@ namespace OAuthSereverRP.Pages
 
                     if (context != null)
                     {
-                        return Redirect(Login.ReturnUrl);
+                        return Redirect(returnUrl);
                     }
 
                     //request for a local page

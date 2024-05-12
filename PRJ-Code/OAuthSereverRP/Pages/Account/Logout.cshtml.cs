@@ -3,6 +3,7 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Services;
 using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -31,7 +32,7 @@ namespace OAuthSereverRP.Pages.Account
 
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
             }
-            return RedirectToAction("LoggedOut");
+            return Page();
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
@@ -42,7 +43,7 @@ namespace OAuthSereverRP.Pages.Account
 
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
             }
-            return RedirectToAction("LoggedOut", new { returnUrl });
+            return RedirectToPage("LoggedOut", new { LogoutId });
         }
     }
 }
