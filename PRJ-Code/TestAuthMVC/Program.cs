@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = 
@@ -16,8 +17,7 @@ builder.Services.AddAuthentication(options =>
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
 {
-    //options.Authority = "https://localhost:5001"; //OAuthServerMVC
-    options.Authority = "https://localhost:7044"; //OAuthServerRP
+    options.Authority = "https://localhost:5001";
     options.ClientId = "mvc";
     options.ClientSecret = "secret";
     options.ResponseType = "code";
