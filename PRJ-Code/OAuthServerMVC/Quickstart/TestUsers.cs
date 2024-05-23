@@ -40,6 +40,7 @@ namespace IdentityServerHost.Quickstart.UI
                             new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
                             new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
                             new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+                            new Claim(JwtClaimTypes.BirthDate, "2015-12-17"),
                             new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address), IdentityServerConstants.ClaimValueTypes.Json)
                         }
                     },
@@ -56,7 +57,27 @@ namespace IdentityServerHost.Quickstart.UI
                             new Claim(JwtClaimTypes.Email, "BobSmith@email.com"),
                             new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
                             new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                            new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address), IdentityServerConstants.ClaimValueTypes.Json)
+                            new Claim(JwtClaimTypes.BirthDate, "1995-12-17"),
+                            new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address), IdentityServerConstants.ClaimValueTypes.Json),
+                            new Claim(JwtClaimTypes.Role, "admin")
+                        }
+                    },
+                    new TestUser
+                    {
+                        SubjectId = "88421114",
+                        Username = "admin",
+                        Password = "admin",
+                        Claims =
+                        {
+                            new Claim(JwtClaimTypes.Name, "Admin Smith"),
+                            new Claim(JwtClaimTypes.GivenName, "Admin"),
+                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
+                            new Claim(JwtClaimTypes.Email, "admin@oauth.com"),
+                            new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
+                            new Claim(JwtClaimTypes.WebSite, "http://admin.com"),
+                            new Claim(JwtClaimTypes.BirthDate, "1995-12-17"),
+                            new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address), IdentityServerConstants.ClaimValueTypes.Json),
+                            new Claim(JwtClaimTypes.Role, "admin")
                         }
                     }
                 };

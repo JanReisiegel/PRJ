@@ -1,3 +1,4 @@
+using IdentityModel;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        //options.Authority = "https://localhost:5001";
-        options.Authority = "https://localhost:7044";
+        options.Authority = "https://localhost:5001";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = false
@@ -25,6 +25,12 @@ builder.Services.AddAuthorization(options =>
         policy.RequireAuthenticatedUser();
         policy.RequireClaim("scope", "api1");
     });
+    /*options.AddPolicy("Admin", policy =>
+    {
+        policy.RequireAssertion(context => context.User.HasClaim(c => c.Type == "role" && c.Value == "admin"));
+        policy.RequireClaim(JwtClaimTypes.Role, ["admin"]);
+        policy.RequireRole("admin");
+    });*/
 });
 
 var app = builder.Build();

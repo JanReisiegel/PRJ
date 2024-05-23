@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityModel;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
@@ -13,7 +14,15 @@ namespace OAuthServerMVC
             new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResource
+                {
+                    Name = "role",
+                    UserClaims = new List<string>
+                    {
+                        JwtClaimTypes.Role
+                    }
+                }
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -30,7 +39,7 @@ namespace OAuthServerMVC
                     ClientId = "client",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     ClientSecrets = { new Secret("secret".Sha256())},
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { /*"api1"*/ }
                 },
                 new Client
                 {
@@ -44,7 +53,8 @@ namespace OAuthServerMVC
                     {
                         IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
+                        "api1",
+                        "role"
                     }
                 }
             };

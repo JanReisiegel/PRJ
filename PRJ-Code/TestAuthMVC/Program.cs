@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
@@ -25,7 +26,17 @@ builder.Services.AddAuthentication(options =>
     options.Scope.Add("profile");
     options.Scope.Add("api1");
     options.Scope.Add("offline_access");
+    options.Scope.Add("role");
+    options.ClaimActions.MapUniqueJsonKey("role", "role");
     options.GetClaimsFromUserInfoEndpoint = true;
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy =>
+    {
+        policy.RequireClaim("role", "admin");
+    });
 });
 
 var app = builder.Build();
